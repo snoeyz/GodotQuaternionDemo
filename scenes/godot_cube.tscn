@@ -1,0 +1,45 @@
+[gd_scene load_steps=3 format=3 uid="uid://cyh3f031l585i"]
+
+[ext_resource type="Texture2D" uid="uid://cvjypg4ogf1qq" path="res://icon.svg" id="1_npk2k"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hfmyr"]
+
+[node name="GodotCube" type="RigidBody3D"]
+gravity_scale = 0.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_hfmyr")
+
+[node name="FrontFace" type="Sprite3D" parent="."]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0.5)
+modulate = Color(0, 0, 1, 1)
+texture = ExtResource("1_npk2k")
+
+[node name="BackFace" type="Sprite3D" parent="."]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, -0.5)
+modulate = Color(0, 0, 1, 1)
+texture = ExtResource("1_npk2k")
+
+[node name="TopFace" type="Sprite3D" parent="."]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0.5, 0)
+modulate = Color(0, 1, 0, 1)
+axis = 1
+texture = ExtResource("1_npk2k")
+
+[node name="BottomFace" type="Sprite3D" parent="."]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, -0.5, 0)
+modulate = Color(0, 1, 0, 1)
+axis = 1
+texture = ExtResource("1_npk2k")
+
+[node name="RightFace" type="Sprite3D" parent="."]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0.5, 0, 0)
+modulate = Color(1, 0, 0, 1)
+axis = 0
+texture = ExtResource("1_npk2k")
+
+[node name="LeftFace" type="Sprite3D" parent="."]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, -0.5, 0, 0)
+modulate = Color(1, 0, 0, 1)
+axis = 0
+texture = ExtResource("1_npk2k")

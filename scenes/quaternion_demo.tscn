@@ -1,0 +1,184 @@
+[gd_scene load_steps=15 format=3 uid="uid://0wehls2704t7"]
+
+[ext_resource type="Script" path="res://scripts/quaternion_demo.gd" id="1_hdf15"]
+[ext_resource type="PackedScene" uid="uid://cyh3f031l585i" path="res://scenes/godot_cube.tscn" id="1_nengg"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o8kmj"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="TorusMesh" id="TorusMesh_18h88"]
+material = SubResource("StandardMaterial3D_o8kmj")
+inner_radius = 0.95
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r60qc"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_rb11j"]
+material = SubResource("StandardMaterial3D_r60qc")
+top_radius = 0.02
+bottom_radius = 0.02
+height = 2.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0r54r"]
+albedo_color = Color(0, 0, 1, 1)
+
+[sub_resource type="TorusMesh" id="TorusMesh_rceyi"]
+material = SubResource("StandardMaterial3D_0r54r")
+inner_radius = 0.9
+outer_radius = 0.95
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iostp"]
+albedo_color = Color(0, 0, 1, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_u5vqr"]
+material = SubResource("StandardMaterial3D_iostp")
+top_radius = 0.02
+bottom_radius = 0.02
+height = 2.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5vihv"]
+albedo_color = Color(0, 1, 0, 1)
+
+[sub_resource type="TorusMesh" id="TorusMesh_8m3am"]
+material = SubResource("StandardMaterial3D_5vihv")
+inner_radius = 0.85
+outer_radius = 0.9
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fq6xf"]
+albedo_color = Color(0, 1, 0, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_o6qti"]
+material = SubResource("StandardMaterial3D_fq6xf")
+top_radius = 0.02
+bottom_radius = 0.02
+height = 2.5
+
+[node name="QuaternionDemo" type="Node3D"]
+script = ExtResource("1_hdf15")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.18054)
+
+[node name="EulerGodotCube" parent="." instance=ExtResource("1_nengg")]
+transform = Transform3D(-1, -8.74228e-08, -4.37114e-08, -8.74228e-08, 1, -4.37114e-08, 4.37114e-08, -4.37114e-08, -1, 0, 0, 0)
+
+[node name="GimbalX" type="MeshInstance3D" parent="."]
+mesh = SubResource("TorusMesh_18h88")
+
+[node name="XAxis" type="MeshInstance3D" parent="GimbalX"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("CylinderMesh_rb11j")
+
+[node name="GimbalZ" type="MeshInstance3D" parent="GimbalX"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("TorusMesh_rceyi")
+
+[node name="ZAxis" type="MeshInstance3D" parent="GimbalX/GimbalZ"]
+transform = Transform3D(1.91069e-15, 4.37114e-08, 1, 1, -4.37114e-08, 0, 4.37114e-08, 1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("CylinderMesh_u5vqr")
+
+[node name="GimbalY" type="MeshInstance3D" parent="GimbalX/GimbalZ"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("TorusMesh_8m3am")
+
+[node name="YAxis" type="MeshInstance3D" parent="GimbalX/GimbalZ/GimbalY"]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 0, 0, 0)
+mesh = SubResource("CylinderMesh_o6qti")
+skeleton = NodePath("../..")
+
+[node name="RemoteTransform3D" type="RemoteTransform3D" parent="GimbalX/GimbalZ/GimbalY"]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 0, 0, 0)
+remote_path = NodePath("../../../../EulerGodotCube")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer"]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -40.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer/PanelContainer/MarginContainer"]
+layout_mode = 2
+columns = 3
+
+[node name="XAxisLabel" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "X Axis:"
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/PanelContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_top = 3
+
+[node name="XAxisSlider" type="HSlider" parent="CanvasLayer/PanelContainer/MarginContainer/GridContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 360.0
+step = 15.0
+
+[node name="XAxisValue" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "0"
+horizontal_alignment = 1
+
+[node name="YAxisLabel" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Y Axis:"
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/PanelContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_top = 3
+
+[node name="YAxisSlider" type="HSlider" parent="CanvasLayer/PanelContainer/MarginContainer/GridContainer/MarginContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 360.0
+step = 15.0
+
+[node name="YAxisValue" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "0"
+horizontal_alignment = 1
+
+[node name="ZAxisLabel" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Z Axis:"
+
+[node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer/PanelContainer/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_top = 3
+
+[node name="ZAxisSlider" type="HSlider" parent="CanvasLayer/PanelContainer/MarginContainer/GridContainer/MarginContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 360.0
+step = 15.0
+
+[node name="ZAxisValue" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/GridContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "0"
+horizontal_alignment = 1
+
+[connection signal="value_changed" from="CanvasLayer/PanelContainer/MarginContainer/GridContainer/MarginContainer/XAxisSlider" to="." method="_on_x_axis_slider_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/PanelContainer/MarginContainer/GridContainer/MarginContainer2/YAxisSlider" to="." method="_on_y_axis_slider_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/PanelContainer/MarginContainer/GridContainer/MarginContainer3/ZAxisSlider" to="." method="_on_z_axis_slider_value_changed"]
