@@ -1,0 +1,88 @@
+[gd_scene load_steps=15 format=3 uid="uid://dwobteiwvbgnp"]
+
+[ext_resource type="Script" path="res://scripts/euler_cube.gd" id="1_rirm8"]
+[ext_resource type="PackedScene" uid="uid://cyh3f031l585i" path="res://scenes/godot_cube.tscn" id="2_tiw0c"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o8kmj"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="TorusMesh" id="TorusMesh_7tglg"]
+material = SubResource("StandardMaterial3D_o8kmj")
+inner_radius = 0.95
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r60qc"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_2spvb"]
+material = SubResource("StandardMaterial3D_r60qc")
+top_radius = 0.02
+bottom_radius = 0.02
+height = 2.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0r54r"]
+albedo_color = Color(0, 0, 1, 1)
+
+[sub_resource type="TorusMesh" id="TorusMesh_0w24x"]
+material = SubResource("StandardMaterial3D_0r54r")
+inner_radius = 0.9
+outer_radius = 0.95
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iostp"]
+albedo_color = Color(0, 0, 1, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_gly7y"]
+material = SubResource("StandardMaterial3D_iostp")
+top_radius = 0.02
+bottom_radius = 0.02
+height = 2.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5vihv"]
+albedo_color = Color(0, 1, 0, 1)
+
+[sub_resource type="TorusMesh" id="TorusMesh_gngff"]
+material = SubResource("StandardMaterial3D_5vihv")
+inner_radius = 0.85
+outer_radius = 0.9
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fq6xf"]
+albedo_color = Color(0, 1, 0, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_rahdb"]
+material = SubResource("StandardMaterial3D_fq6xf")
+top_radius = 0.02
+bottom_radius = 0.02
+height = 2.5
+
+[node name="EulerCube" type="Node3D"]
+script = ExtResource("1_rirm8")
+
+[node name="GodotCube" parent="." instance=ExtResource("2_tiw0c")]
+transform = Transform3D(-1, -8.74228e-08, -4.37114e-08, -8.74228e-08, 1, -4.37114e-08, 4.37114e-08, -4.37114e-08, -1, 0, 0, 0)
+
+[node name="OuterGimbal" type="MeshInstance3D" parent="."]
+mesh = SubResource("TorusMesh_7tglg")
+
+[node name="OuterAxis" type="MeshInstance3D" parent="OuterGimbal"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("CylinderMesh_2spvb")
+
+[node name="MiddleGimbal" type="MeshInstance3D" parent="OuterGimbal"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("TorusMesh_0w24x")
+
+[node name="MiddleAxis" type="MeshInstance3D" parent="OuterGimbal/MiddleGimbal"]
+transform = Transform3D(1.91069e-15, 4.37114e-08, 1, 1, -4.37114e-08, 0, 4.37114e-08, 1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("CylinderMesh_gly7y")
+
+[node name="InnerGimbal" type="MeshInstance3D" parent="OuterGimbal/MiddleGimbal"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("TorusMesh_gngff")
+
+[node name="InnerAxis" type="MeshInstance3D" parent="OuterGimbal/MiddleGimbal/InnerGimbal"]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 0, 0, 0)
+mesh = SubResource("CylinderMesh_rahdb")
+skeleton = NodePath("../..")
+
+[node name="RemoteTransform3D" type="RemoteTransform3D" parent="OuterGimbal/MiddleGimbal/InnerGimbal"]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 0, 0, 0)
+remote_path = NodePath("../../../../GodotCube")
