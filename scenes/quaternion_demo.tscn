@@ -57,7 +57,7 @@ height = 2.5
 script = ExtResource("1_hdf15")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.18054)
+transform = Transform3D(1, 0, 0, 0, 0.980785, 0.19509, 0, -0.19509, 0.980785, 0, 0.503392, 3.03389)
 
 [node name="EulerGodotCube" parent="." instance=ExtResource("1_nengg")]
 transform = Transform3D(-1, -8.74228e-08, -4.37114e-08, -8.74228e-08, 1, -4.37114e-08, 4.37114e-08, -4.37114e-08, -1, 0, 0, 0)
