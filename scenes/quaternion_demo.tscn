@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://0wehls2704t7"]
+[gd_scene load_steps=19 format=3 uid="uid://0wehls2704t7"]
 
 [ext_resource type="Script" path="res://scripts/quaternion_demo.gd" id="1_hdf15"]
 [ext_resource type="PackedScene" uid="uid://cyh3f031l585i" path="res://scenes/godot_cube.tscn" id="1_nengg"]
@@ -53,16 +53,38 @@ top_radius = 0.02
 bottom_radius = 0.02
 height = 2.5
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ge4ya"]
+albedo_color = Color(1, 1, 0, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_aqt7f"]
+material = SubResource("StandardMaterial3D_ge4ya")
+top_radius = 0.05
+bottom_radius = 0.05
+height = 1.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_82jug"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_he72p"]
+material = SubResource("StandardMaterial3D_82jug")
+top_radius = 0.0
+bottom_radius = 0.08
+height = 0.5
+
 [node name="QuaternionDemo" type="Node3D"]
 script = ExtResource("1_hdf15")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.980785, 0.19509, 0, -0.19509, 0.980785, 0, 0.503392, 3.03389)
 
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+light_energy = 13.05
+
 [node name="EulerGodotCube" parent="." instance=ExtResource("1_nengg")]
-transform = Transform3D(-1, -8.74228e-08, -4.37114e-08, -8.74228e-08, 1, -4.37114e-08, 4.37114e-08, -4.37114e-08, -1, 0, 0, 0)
+transform = Transform3D(-1, -8.74228e-08, -4.37114e-08, -8.74228e-08, 1, -4.37114e-08, 4.37114e-08, -4.37114e-08, -1, -1.5, 0, 0)
 
 [node name="GimbalX" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, 0)
 mesh = SubResource("TorusMesh_18h88")
 
 [node name="XAxis" type="MeshInstance3D" parent="GimbalX"]
@@ -90,6 +112,22 @@ skeleton = NodePath("../..")
 transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 0, 0, 0)
 remote_path = NodePath("../../../../EulerGodotCube")
 
+[node name="QuaternionGodotCube" parent="." instance=ExtResource("1_nengg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, 0)
+
+[node name="QuaternionArrow" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, 0)
+rotation_edit_mode = 1
+
+[node name="ArrowStem" type="MeshInstance3D" parent="QuaternionArrow"]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0.75, 0, 0)
+mesh = SubResource("CylinderMesh_aqt7f")
+skeleton = NodePath("../..")
+
+[node name="ArrowPoint" type="MeshInstance3D" parent="QuaternionArrow/ArrowStem"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("CylinderMesh_he72p")
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="PanelContainer" type="PanelContainer" parent="CanvasLayer"]
@@ -109,76 +147,178 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="GridContainer" type="GridContainer" parent="CanvasLayer/PanelContainer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer"]
 layout_mode = 2
+
+[node name="EulerControls" type="GridContainer" parent="CanvasLayer/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
 columns = 3
 
-[node name="XAxisLabel" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/GridContainer"]
+[node name="Spacer" type="Control" parent="CanvasLayer/PanelContainer/MarginContainer/HBoxContainer/EulerControls"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/HBoxContainer/EulerControls"]
+layout_mode = 2
+text = "Euler Coordinate System"
+horizontal_alignment = 1
+
+[node name="Spacer2" type="Control" parent="CanvasLayer/PanelContainer/MarginContainer/HBoxContainer/EulerControls"]
+layout_mode = 2
+
+[node name="XAxisLabel" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/HBoxContainer/EulerControls"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "X Axis:"
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/PanelContainer/MarginContainer/GridContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/PanelContainer/MarginContainer/HBoxContainer/EulerControls"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/margin_top = 3
+theme_override_constants/margin_top = 4
 
-[node name="XAxisSlider" type="HSlider" parent="CanvasLayer/PanelContainer/MarginContainer/GridContainer/MarginContainer"]
+[node name="XAxisSlider" type="HSlider" parent="CanvasLayer/PanelContainer/MarginContainer/HBoxContainer/EulerControls/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-max_value = 360.0
+min_value = -180.0
+max_value = 180.0
 step = 15.0
 
-[node name="XAxisValue" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/GridContainer"]
+[node name="XAxisValue" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/HBoxContainer/EulerControls"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "0"
 horizontal_alignment = 1
 
-[node name="YAxisLabel" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/GridContainer"]
+[node name="YAxisLabel" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/HBoxContainer/EulerControls"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "Y Axis:"
 
-[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/PanelContainer/MarginContainer/GridContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/PanelContainer/MarginContainer/HBoxContainer/EulerControls"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/margin_top = 3
+theme_override_constants/margin_top = 4
 
-[node name="YAxisSlider" type="HSlider" parent="CanvasLayer/PanelContainer/MarginContainer/GridContainer/MarginContainer2"]
+[node name="YAxisSlider" type="HSlider" parent="CanvasLayer/PanelContainer/MarginContainer/HBoxContainer/EulerControls/MarginContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
-max_value = 360.0
+min_value = -180.0
+max_value = 180.0
 step = 15.0
 
-[node name="YAxisValue" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/GridContainer"]
+[node name="YAxisValue" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/HBoxContainer/EulerControls"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "0"
 horizontal_alignment = 1
 
-[node name="ZAxisLabel" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/GridContainer"]
+[node name="ZAxisLabel" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/HBoxContainer/EulerControls"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "Z Axis:"
 
-[node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer/PanelContainer/MarginContainer/GridContainer"]
+[node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer/PanelContainer/MarginContainer/HBoxContainer/EulerControls"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/margin_top = 3
+theme_override_constants/margin_top = 4
 
-[node name="ZAxisSlider" type="HSlider" parent="CanvasLayer/PanelContainer/MarginContainer/GridContainer/MarginContainer3"]
+[node name="ZAxisSlider" type="HSlider" parent="CanvasLayer/PanelContainer/MarginContainer/HBoxContainer/EulerControls/MarginContainer3"]
 layout_mode = 2
 size_flags_horizontal = 3
-max_value = 360.0
+min_value = -180.0
+max_value = 180.0
 step = 15.0
 
-[node name="ZAxisValue" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/GridContainer"]
+[node name="ZAxisValue" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/HBoxContainer/EulerControls"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "0"
 horizontal_alignment = 1
 
-[connection signal="value_changed" from="CanvasLayer/PanelContainer/MarginContainer/GridContainer/MarginContainer/XAxisSlider" to="." method="_on_x_axis_slider_value_changed"]
-[connection signal="value_changed" from="CanvasLayer/PanelContainer/MarginContainer/GridContainer/MarginContainer2/YAxisSlider" to="." method="_on_y_axis_slider_value_changed"]
-[connection signal="value_changed" from="CanvasLayer/PanelContainer/MarginContainer/GridContainer/MarginContainer3/ZAxisSlider" to="." method="_on_z_axis_slider_value_changed"]
+[node name="QuaternionControls" type="VBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/HBoxContainer/QuaternionControls"]
+layout_mode = 2
+text = "Quaternion Coordinate System"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer/HBoxContainer/QuaternionControls"]
+layout_mode = 2
+
+[node name="ILabel" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/HBoxContainer/QuaternionControls/HBoxContainer"]
+layout_mode = 2
+text = "I:"
+
+[node name="IValue" type="SpinBox" parent="CanvasLayer/PanelContainer/MarginContainer/HBoxContainer/QuaternionControls/HBoxContainer"]
+layout_mode = 2
+min_value = -1.0
+max_value = 1.0
+step = 0.1
+value = 1.0
+
+[node name="JLabel" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/HBoxContainer/QuaternionControls/HBoxContainer"]
+layout_mode = 2
+text = "J:"
+
+[node name="JValue" type="SpinBox" parent="CanvasLayer/PanelContainer/MarginContainer/HBoxContainer/QuaternionControls/HBoxContainer"]
+layout_mode = 2
+min_value = -1.0
+max_value = 1.0
+step = 0.1
+
+[node name="KLabel" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/HBoxContainer/QuaternionControls/HBoxContainer"]
+layout_mode = 2
+text = "K:"
+
+[node name="KValue" type="SpinBox" parent="CanvasLayer/PanelContainer/MarginContainer/HBoxContainer/QuaternionControls/HBoxContainer"]
+layout_mode = 2
+min_value = -1.0
+max_value = 1.0
+step = 0.1
+
+[node name="CalculateQuatButton" type="Button" parent="CanvasLayer/PanelContainer/MarginContainer/HBoxContainer/QuaternionControls/HBoxContainer"]
+layout_mode = 2
+text = "Calculate Quaternion"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer/HBoxContainer/QuaternionControls"]
+layout_mode = 2
+
+[node name="WLabel" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/HBoxContainer/QuaternionControls/HBoxContainer2"]
+layout_mode = 2
+text = "W:"
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/PanelContainer/MarginContainer/HBoxContainer/QuaternionControls/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_top = 4
+
+[node name="WSlider" type="HSlider" parent="CanvasLayer/PanelContainer/MarginContainer/HBoxContainer/QuaternionControls/HBoxContainer2/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -180.0
+max_value = 180.0
+step = 15.0
+
+[node name="WValue" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/HBoxContainer/QuaternionControls/HBoxContainer2"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "0"
+horizontal_alignment = 1
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="CanvasLayer/PanelContainer/MarginContainer/HBoxContainer/QuaternionControls"]
+layout_mode = 2
+
+[node name="QuatLabel" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/HBoxContainer/QuaternionControls/HBoxContainer3"]
+layout_mode = 2
+text = "Quaternion:"
+
+[node name="QuatValue" type="Label" parent="CanvasLayer/PanelContainer/MarginContainer/HBoxContainer/QuaternionControls/HBoxContainer3"]
+layout_mode = 2
+
+[connection signal="value_changed" from="CanvasLayer/PanelContainer/MarginContainer/HBoxContainer/EulerControls/MarginContainer/XAxisSlider" to="." method="_on_x_axis_slider_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/PanelContainer/MarginContainer/HBoxContainer/EulerControls/MarginContainer2/YAxisSlider" to="." method="_on_y_axis_slider_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/PanelContainer/MarginContainer/HBoxContainer/EulerControls/MarginContainer3/ZAxisSlider" to="." method="_on_z_axis_slider_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/PanelContainer/MarginContainer/HBoxContainer/QuaternionControls/HBoxContainer/KValue" to="." method="_on_z_value_value_changed"]
+[connection signal="value_changed" from="CanvasLayer/PanelContainer/MarginContainer/HBoxContainer/QuaternionControls/HBoxContainer2/MarginContainer/WSlider" to="." method="_on_w_slider_value_changed"]
