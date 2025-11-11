@@ -12,8 +12,16 @@ config_version=5
 
 config/name="GodotQuaternionDemo"
 run/main_scene="res://scenes/quaternion_demo.tscn"
-config/features=PackedStringArray("4.3", "Mobile")
+config/features=PackedStringArray("4.5", "Mobile")
 config/icon="res://icon.svg"
+
+[display]
+
+window/size/viewport_width=702
+
+[editor]
+
+movie_writer/movie_file="output.avi"
 
 [rendering]
 
